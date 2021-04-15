@@ -7,6 +7,7 @@ import { currentUserRouter } from './routes/current-user.js';
 import { signupRouter } from './routes/signup.js';
 import { siginRouter } from './routes/signin.js';
 import { signoutRouter } from './routes/signout.js';
+import { errorHandler } from './middleware/error-handler.js';
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(currentUserRouter);
 app.use(signupRouter);
 app.use(siginRouter);
 app.use(signoutRouter);
+app.use(errorHandler);
 
 
 app.listen(3000, () => {
