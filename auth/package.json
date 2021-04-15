@@ -12,6 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-validation": "^3.0.8",
+    "express-validator": "^6.10.0",
+    "require": "^2.4.20"
   }
 }

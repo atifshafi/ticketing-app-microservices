@@ -1,13 +1,18 @@
-import express from 'express';
+import express from "express";
 import bodyParser from "body-parser";
 
-import currentUserRouter from './routes/current-user';
-import signupRouter from './routes/signup';
-import siginRouter from './routes/signin';
-import signoutRouter from './routes/signout';
+
+
+import { currentUserRouter } from './routes/current-user.js';
+import { signupRouter } from './routes/signup.js';
+import { siginRouter } from './routes/signin.js';
+import { signoutRouter } from './routes/signout.js';
+
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.json());
+
 
 app.use(currentUserRouter);
 app.use(signupRouter);
