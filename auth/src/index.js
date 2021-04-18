@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import 'express-async-errors';
+import mongoose from 'mongoose';
 
 import {currentUserRouter} from './routes/current-user.js';
 import {signupRouter} from './routes/signup.js';
@@ -29,10 +30,21 @@ app.all('*', async (req, res) => {
 // errorhandler knows it's a error since 4 param are being passed including 'err'
 app.use(errorHandler);
 
+const start = async () => {
+    try {
+        await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        })
+        console.log("Connected to MongoDB ...")
+    } catch (err) {
+        console.log(err);
+    }
 
-app.listen(3000, () => {
-    console.log('auth server started: 3000!');
-});
+    app.listen(3000, () => {
+        console.log('auth server started: 3000!');
+    });
+}
 
-
-
+start();
