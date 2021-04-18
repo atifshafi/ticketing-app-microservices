@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-
+import 'express-async-errors';
 
 import {currentUserRouter} from './routes/current-user.js';
 import {signupRouter} from './routes/signup.js';
@@ -20,8 +20,9 @@ app.use(signupRouter);
 app.use(siginRouter);
 app.use(signoutRouter);
 
-// Handling all invalid requests (add async)
-app.all('*', () => {
+// Handling all invalid requests. Note that adding 'async' means the function will return a promise based object in the future instead of immediately returning.
+// For asynchronous route handler, we need to rely on 'next()' function. OR use 'express-async-errors'
+app.all('*', async (req, res) => {
     throw new NotFoundError();
 });
 
