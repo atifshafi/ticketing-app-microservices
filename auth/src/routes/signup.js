@@ -1,31 +1,41 @@
 import express from "express";
 import {body, validationResult} from 'express-validator';
-import {RequestValidationError} from '../error/request-validation.js'
-import {DatabaseConnectionError} from '../error/database-connection.js'
+import {BadRequestError} from '../error/bad-request-error.js'
+import {validateRequest} from '../middleware/validateRequest.js'
+import {User} from '../models/users.js'
+import jwt from 'jsonwebtoken'
 
 const route = express.Router();
 
 route.post(
     '/api/users/signup',
     body('email').isEmail().withMessage('Email must be valid'),
-    body('password').trim(),
-    body('password').isLength({min: 4, max: 20}).withMessage('Password must be between 4 and 20 characters'),
-    (req, res) => {
-        // if req.body
+    body('password').trim().isLength({min: 4, max: 20}).withMessage('Password must be between 4 and 20 characters'),
+    validateRequest,
+    async (req, res) => {
         const {email, password} = req.body;
-        const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            // by throwing error, it will talk to error-handling middleware
-            throw new RequestValidationError(errors.array())
+        // Check if email exists
+        const document = await User.findOne({ email: email }).exec();
+        if (document) {
+            throw new BadRequestError('Email in use')
         }
 
         console.log('Creating a user ...');
-        throw new DatabaseConnectionError()
+        // Create an user
+        const user = await User.create({'email': email, 'password': password});
 
-        res.send({});
+        // Generate JWT and store it in the session. Note that by adding to the session object, it's encodes jwt with base64
+        req.session.jwt = jwt.sign({
+            id: user.id,
+            email: user.email
+        }, process.env.JWT_KEY);
 
-        // new User({email, password})
+        // throw new DatabaseConnectionError()
+
+        res.status(201).send(user);
+
+        // new User({email, password})Error
     }
 );
 

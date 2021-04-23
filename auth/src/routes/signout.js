@@ -1,8 +1,10 @@
 import express from "express";
 const route = express.Router();
 
+// This router will clear up any jwt associated with a session
 route.post('/api/users/signout', (req,res) =>{
-    res.send("Signoined out!");
+    req.session = null;
+    res.send({});
 })
 
 export {route as signoutRouter};
