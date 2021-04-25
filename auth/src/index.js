@@ -14,6 +14,7 @@ import {NotFoundError} from "./error/not-found-error.js";
 
 const app = express();
 // Binding application-level middleware to an instance of the app object (have access to - req, res, next()) by using the app.use().
+// Mounts the specified middleware function or functions at the specified path: the middleware function is executed when the base of the requested path matches path. A middleware mounted without a path will be executed for every request to the app.
 app.use(bodyParser.json());
 app.use(express.json());
 // This will tell express to trust incoming 'https' requests from a proxy server

@@ -1,7 +1,7 @@
 import express from "express";
 import {body, validationResult} from 'express-validator';
 import {BadRequestError} from '../error/bad-request-error.js'
-import {validateRequest} from '../middleware/validateRequest.js'
+import {validateRequest} from '../middleware/validate-request.js'
 import {User} from '../models/users.js'
 import jwt from 'jsonwebtoken'
 
