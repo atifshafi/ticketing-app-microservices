@@ -5,14 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "jest"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./src/test/setup.js"
-    ]
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
