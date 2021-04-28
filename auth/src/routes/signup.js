@@ -16,7 +16,7 @@ route.post(
         const {email, password} = req.body;
 
         // Check if email exists
-        const document = await User.findOne({ email: email }).exec();
+        const document = await User.findOne({email: email}).exec();
         if (document) {
             throw new BadRequestError('Email in use')
         }
@@ -31,11 +31,9 @@ route.post(
             email: user.email
         }, process.env.JWT_KEY);
 
-        // throw new DatabaseConnectionError()
 
         res.status(201).send(user);
 
-        // new User({email, password})Error
     }
 );
 
