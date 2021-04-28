@@ -9,7 +9,7 @@ import {NotAuthorizedError} from '../error/not-authorized-error.js'
 export const errorHandler = (err, req, res, next) => {
     // Verifying type of error
     if (err instanceof RequestValidationError) {
-        return res.status(err.statusCode).send({ errors: err.serializeErrors() });
+        return res.status(err.statusCode).send(err.serializeErrors());
     }
     if (err instanceof DatabaseConnectionError) {
         return res.status(err.statusCode).send(err.serializeErrors());
