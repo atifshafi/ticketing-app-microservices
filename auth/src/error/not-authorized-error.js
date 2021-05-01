@@ -1,6 +1,6 @@
 export class NotAuthorizedError extends Error {
     reason = 'Not Authorized'
-    statusCode = 400;
+    statusCode = 401;
 
     constructor() {
         super();
