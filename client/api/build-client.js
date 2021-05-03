@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default ({req}) => {
-    // Identify if the component is being rendered on the client side or the server
+    // Identify if the components is being rendered on the client side or the server
     if (typeof window === 'undefined') {
         // Seeing issue when there's no cookie in the request (getting 400)
         // We are on the server. Therefore request needs to made to the proxy server

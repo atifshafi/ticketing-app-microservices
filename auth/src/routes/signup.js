@@ -1,7 +1,6 @@
-import express from "express";
+import express, {request} from "express";
 import {body, validationResult} from 'express-validator';
-import {BadRequestError} from '../error/bad-request-error.js'
-import {validateRequest} from '../middleware/validate-request.js'
+import {BadRequestError, validateRequest} from '@atiftickets/common'
 import {User} from '../models/users.js'
 import jwt from 'jsonwebtoken'
 
