@@ -19,7 +19,7 @@ app.use(express.json());
 // This will tell express to trust incoming 'https' requests from a proxy server
 app.set('trust proxy', true);
 
-// Cookies will be used as a transporter of jwt
+// Cookies will be used as a transporter of jwt. This needs to run before other middlewares set here so that 'req.session' is correctly set
 app.use(
     cookieSession({
         // Disabling encrypting cookie (using jwt with exp)

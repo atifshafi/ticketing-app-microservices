@@ -4,7 +4,8 @@ import bodyParser from 'body-parser';
 import 'express-async-errors';
 import cookieSession from 'cookie-session';
 
-import {errorHandler, NotFoundError} from '@atiftickets/common';
+import {createNewTicket} from './routes/new.js';
+import {errorHandler, NotFoundError, currentUser} from '@atiftickets/common';
 
 
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 // This will tell express to trust incoming 'https' requests from a proxy server
 app.set('trust proxy', true);
 
-// Cookies will be used as a transporter of jwt
+// Cookies will be used as a transporter of jwt. This needs to run before other middlewares set here so that 'req.session' is correctly set
 app.use(
     cookieSession({
         // Disabling encrypting cookie (using jwt with exp)
@@ -24,6 +25,9 @@ app.use(
         secure: true
     }))
 
+
+app.use(currentUser);
+app.use(createNewTicket);
 
 // Handling all invalid requests. Note that adding 'async' means the function will return a promise based object in the future instead of immediately returning.
 // For asynchronous route handler, we need to rely on 'next()' function. OR use 'express-async-errors'
