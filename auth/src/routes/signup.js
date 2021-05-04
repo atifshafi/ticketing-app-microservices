@@ -22,7 +22,10 @@ route.post(
 
         console.log('Creating a user ...');
         // Create an user
-        const user = await User.create({'email': email, 'password': password});
+        const user = await User.create({
+            'email': email,
+            'password': password
+        });
 
         // Generate JWT and store it in the session. Note that by adding to the session object, it's encodes jwt with base64
         req.session.jwt = jwt.sign({

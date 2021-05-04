@@ -1,17 +1,30 @@
 import express from "express";
-import {requireAuth} from "@atiftickets/common";
+import {currentUser, requireAuth} from "@atiftickets/common";
 import {body} from "express-validator";
 import {validateRequest, BadRequestError} from '@atiftickets/common'
+import {Ticket} from "../models/tickets.js";
 
 const route = express.Router();
 
-// This router will clear up any jwt associated with a session
+// This router will create a ticket (w/ price) for a given user
 route.post('/api/tickets', requireAuth,
     body('title').not().isEmpty().withMessage('Title is required'),
-    body('price').isFloat({ gt:0 }).withMessage('Price must be greater than 0'),
-    async (req,res) =>{
+    body('price').isFloat({gt: 0}).withMessage('Price must be greater than 0'),
+    validateRequest,
+    async (req, res) => {
 
-    res.sendStatus(200).send({});
-})
+        const {title, price} = req.body;
 
-export { route as createNewTicket };
+        console.log('Creating a ticket ...');
+        // Create an user
+        const ticket = await Ticket.create({
+            'title': title,
+            'price': price,
+            'userId': req.currentUser.id
+        });
+
+        res.status(201).send(ticket);
+
+    })
+
+export {route as createNewTicket};
