@@ -28,7 +28,7 @@ const start = async () => {
     }
 
     app.listen(3000, () => {
-        console.log('auth server started: 3000!');
+        console.log('ticket server started: 3000!');
     });
 }
 

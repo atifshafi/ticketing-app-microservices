@@ -1,7 +1,6 @@
 import express from "express";
-import {currentUser, requireAuth} from "@atiftickets/common";
+import {currentUser, requireAuth, validateRequest} from "@atiftickets/common";
 import {body} from "express-validator";
-import {validateRequest, BadRequestError} from '@atiftickets/common'
 import {Ticket} from "../models/tickets.js";
 
 const route = express.Router();
@@ -16,7 +15,7 @@ route.post('/api/tickets', requireAuth,
         const {title, price} = req.body;
 
         console.log('Creating a ticket ...');
-        // Create an user
+        // Create an ticket
         const ticket = await Ticket.create({
             'title': title,
             'price': price,

@@ -5,6 +5,9 @@ import 'express-async-errors';
 import cookieSession from 'cookie-session';
 
 import {createNewTicket} from './routes/new.js';
+import {indexTicketsRouter} from './routes/index.js';
+import {showTicketsRouter} from './routes/show.js';
+import {updateTicketRouter} from './routes/update.js';
 import {errorHandler, NotFoundError, currentUser} from '@atiftickets/common';
 
 
@@ -28,6 +31,9 @@ app.use(
 
 app.use(currentUser);
 app.use(createNewTicket);
+app.use(indexTicketsRouter);
+app.use(showTicketsRouter);
+app.use(updateTicketRouter);
 
 // Handling all invalid requests. Note that adding 'async' means the function will return a promise based object in the future instead of immediately returning.
 // For asynchronous route handler, we need to rely on 'next()' function. OR use 'express-async-errors'
