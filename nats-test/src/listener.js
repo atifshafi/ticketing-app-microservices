@@ -11,6 +11,12 @@ const stan = nats.connect('ticketing', randomBytes(20).toString('hex'), {
 stan.on('connect', () => {
     console.log('Listener connected to NATS');
 
+    // Gracefully close/disconnect client
+    stan.on('close', () => {
+        console.log('NAT connection closed!');
+        process.exit();
+    });
+
     // Defining configurable options
     const options = stan
         // Enabling queue group
@@ -26,10 +32,19 @@ stan.on('connect', () => {
         options
 );
 
+    // Consuming the message
     subscription.on('message', (msg) => {
         console.log('Message received');
         console.log(
             'Message #' + msg.getSequence() + ', with data: ' + msg.getData()
             );
+
+        // letting event bus know message has been processed
+        msg.ack();
     })
 });
+
+// When the process is manually closed/interrupted. It will make sure the process closes the client first
+// It makes sure when a process is killed, it's acknowledged by the event bus immediately - verify in: http://localhost:8222/streaming/channelsz?subs=1 (NATS Streaming debug online  tool)
+process.on('SIGINT', () => stan.close());
+process.on('SIGTERM', () => stan.close());
