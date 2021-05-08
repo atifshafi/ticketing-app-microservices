@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import buildClient from '../api/build-client.js'
 import Header from '../components/headers.js'
 
-// Everytime 'next' returns a components from the pages ypu define, it wraps it up with its own default components.
+// Everytime 'next' returns a components from the pages you define, it wraps it up with its own default components.
 // That's defines as 'app' in next.js. Here, we are defining our own custom app components.
 // 'Component' prop, here, will be one of the pages (components) being returned.
 // 'pageProps' is the set of components we are intending to pass to one of the pages.
