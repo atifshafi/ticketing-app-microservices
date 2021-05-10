@@ -22,7 +22,11 @@ stan.on('connect', () => {
         // Enabling queue group
         .subscriptionOptions()
         // By setting this, event bus will wait for acknowledgement from the service. If not received after some time, it will send again to another available instance
-        .setManualAckMode(true);
+        .setManualAckMode(true).
+        // This flag will tell the event bus to re-deliver all the messages when there's a disconnect between the client and the bus. Note that, this flag will re-send the messages which has been processed and acknowledged by the client if used by itself.
+        setDeliverAllAvailable().
+        // This flag helps event bus to keep track which messages has been processed (by using the provided id) so that upon re-connect of a service, event bus doesn't re-send messages which has been processed and acknowledged. Note that, it will only work with 'setDeliverAllAvailable' flag applied and queue group name added.
+        setDurableName('accounting-service')
 
     // Name of the topic: ticket:created, queue group: example. Here, by having the same queue group for all the instances of 'listener' event bus, only one will process the message.
     // As a result, only one message will be sent back to the services who are subscribed this queue group
