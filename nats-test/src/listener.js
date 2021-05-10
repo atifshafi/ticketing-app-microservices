@@ -52,3 +52,58 @@ stan.on('connect', () => {
 // It makes sure when a process is killed, it's acknowledged by the event bus immediately - verify in: http://localhost:8222/streaming/channelsz?subs=1 (NATS Streaming debug online  tool)
 process.on('SIGINT', () => stan.close());
 process.on('SIGTERM', () => stan.close());
+
+
+class listener {
+    constructor(client, qeueGroupName, subject) {
+        this.client = client;
+        this.qeueGroupName = qeueGroupName
+        this.subject = subject
+        this.ackWait = 5 * 1000;
+        this.onMessage(data, msg)
+        {
+        }
+    }
+
+    subscriptionOptions() {
+        return this.client.
+            subscriptionOptions().
+            setDeliverAllAvailable().
+            setDurableName(this.qeueGroupName).
+            setManualAckMode(true).
+            setAckWait(this.ackWait)
+    }
+
+    listen () {
+        const subscription = this.client.subscribe(
+            this.subject,
+            this.qeueGroupName,
+            this.subscriptionOptions()
+        );
+
+        subscription.on('message', (msg) => {
+             console.log(
+            'Message Received: ' + this.subject  + '/' + this.qeueGroupName
+             );
+
+            const parsedData = this.parseMessage(msg);
+            this.onMessage(parsedData, msg);
+        });
+    }
+
+    parseMessage(msg) {
+        const data = msg.getData();
+        let parsed_data;
+        if (typeof data === 'string') {
+             parsed_data = JSON.parse(data);
+        } else {
+            parsed_data = JSON.parse(data.toString('utf8'));
+        }
+        return parsed_data
+
+
+
+}
+
+
+}
