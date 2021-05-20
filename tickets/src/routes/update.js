@@ -37,7 +37,7 @@ route.put('/api/tickets/:id', requireAuth,
         });
 
         // Publish a message to let other services know that a ticket has been updated
-       await new TicketUpdatedPublisher(natsWrapper.client()).publish({
+       new TicketUpdatedPublisher(natsWrapper.client()).publish({
             id: ticket.id,
             title: ticket.title,
             price: ticket.price,

@@ -16,8 +16,23 @@ const start = async () => {
         throw new Error([{message: "env variable for MONGO_URI doesn't exist"}]);
     }
 
+    // Check if the env variable NATS_CLUSTER_ID exists
+    if (!process.env.NATS_CLUSTER_ID) {
+        throw new Error([{message: "env variable for NATS_CLUSTER_ID doesn't exist"}]);
+    }
+
+    // Check if the env variable NATS_CLIENT_ID exists
+    if (!process.env.NATS_CLIENT_ID) {
+        throw new Error([{message: "env variable for NATS_CLIENT_ID doesn't exist"}]);
+    }
+
+    // Check if the env variable NATS_URL exists
+    if (!process.env.NATS_URL) {
+        throw new Error([{message: "env variable for NATS_URL doesn't exist"}]);
+    }
+
     // Connect to NATS service (event bus)
-    await natsWrapper.connect('ticketing', 'njjgutf', 'http://nats-srv:4222');
+    await natsWrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL);
 
     // Gracefully close/disconnect client
     natsWrapper.client().on('close', () => {
