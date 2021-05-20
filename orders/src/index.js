@@ -55,7 +55,7 @@ const start = async () => {
     console.log("Connected to MongoDB ...");
 
     app.listen(3000, () => {
-        console.log('ticket server started: 3000!');
+        console.log('orders server started: 3000!');
     });
 }
 
