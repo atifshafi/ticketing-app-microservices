@@ -2,6 +2,8 @@ import express from "express";
 import {requireAuth, NotFoundError, validateRequest, NotAuthorizedError} from "@atiftickets/common";
 import {body} from "express-validator";
 import {Ticket} from "../models/tickets.js";
+import {TicketUpdatedPublisher} from "../events/ticket-updated-publisher.js"
+import {natsWrapper} from "../nats-wrapper.js";
 
 const route = express.Router();
 
@@ -34,7 +36,15 @@ route.put('/api/tickets/:id', requireAuth,
             'price': price
         });
 
-        res.status(201).send(ticket);
+        // Publish a message to let other services know that a ticket has been updated
+       await new TicketUpdatedPublisher(natsWrapper.client()).publish({
+            id: ticket.id,
+            title: ticket.title,
+            price: ticket.price,
+           userId: ticket.userId
+        });
+
+        res.status(200).send(ticket);
 
     })
 

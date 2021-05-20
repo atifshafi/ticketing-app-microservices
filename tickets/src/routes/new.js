@@ -2,6 +2,8 @@ import express from "express";
 import {currentUser, requireAuth, validateRequest} from "@atiftickets/common";
 import {body} from "express-validator";
 import {Ticket} from "../models/tickets.js";
+import {TicketCreatedPublisher} from "../events/ticket-created-publisher.js"
+import {natsWrapper} from "../nats-wrapper.js";
 
 const route = express.Router();
 
@@ -22,8 +24,16 @@ route.post('/api/tickets', requireAuth,
             'userId': req.currentUser.id
         });
 
+        // Publish a message to let other services know that a ticket has been created
+        await new TicketCreatedPublisher(natsWrapper.client()).publish({
+            id: ticket.id,
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId
+        });
+
         res.status(201).send(ticket);
 
-    })
+    });
 
 export {route as createNewTicket};

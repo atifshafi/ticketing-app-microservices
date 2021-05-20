@@ -23,11 +23,6 @@ stan.on('connect', () => {
 
 });
 
-// When the process is manually closed/interrupted. It will make sure the process closes the client first
-// It makes sure when a process is killed, it's acknowledged by the event bus immediately - verify in: http://localhost:8222/streaming/channelsz?subs=1 (NATS Streaming debug online  tool)
-process.on('SIGINT', () => stan.close());
-process.on('SIGTERM', () => stan.close());
-
 
 
 

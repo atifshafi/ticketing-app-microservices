@@ -1,6 +1,6 @@
 // This script is for consumers (services which are going to consume messages once event bus broadcasts/publishes them)
 import nats from 'node-nats-streaming';
-import {TicketCreatedPublisher} from './events/ticket-created-publish.js'
+import {TicketCreatedPublisher} from './events/ticket-created-publisher.js'
 
 // Better name would be 'client'. 'stan' is used in the module to refer clients
 // Publishers will connect to the event bus using 'node port' forwarding (not via nginx like other services do). This due to the complexity it creates when there's a connection  issue between services and the event bus.
