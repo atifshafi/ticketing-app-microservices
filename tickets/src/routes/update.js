@@ -7,7 +7,7 @@ import {natsWrapper} from "../nats-wrapper.js";
 
 const route = express.Router();
 
-// This router will create a ticket (w/ price) for a given user
+// This router will update a ticket based on id
 route.put('/api/tickets/:id', requireAuth,
     body('title').not().isEmpty().withMessage('Title is required'),
     body('price').isFloat({gt: 0}).withMessage('Price must be greater than 0'),

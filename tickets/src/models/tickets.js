@@ -18,7 +18,7 @@ const ticketSchema = new mongoose.Schema({
     {
         toJSON: {
             transform(doc, ret) {
-                // Converting '_id' to 'id' to keep a consistent id reference, deleting version and password on the response body
+                // Converting '_id' to 'id' to keep a consistent id reference
                 ret.id = ret._id;
                 delete ret._id;
             }
