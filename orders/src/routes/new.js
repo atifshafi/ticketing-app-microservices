@@ -1,9 +1,14 @@
 import express from "express";
+import {requireAuth, validateRequest} from '@atiftickets/common'
+import {body} from "express-validator";
 
 const route = express.Router();
 
-//Purpose of this router to verify validity of jwt of a session. Client will make a req to this endpoint to verify exactly that.
-route.post('/api/orders', async (req, res) => {
+// Router handles new order req by an authenticated user
+route.post('/api/orders', requireAuth,
+    body('ticketId').not().isEmpty().withMessage('TicketId must be provided'),
+    validateRequest,
+    async (req, res) => {
     res.send({});
 
 });
