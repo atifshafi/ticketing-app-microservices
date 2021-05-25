@@ -5,6 +5,8 @@ import {Ticket} from "../models/ticket.js"
 import {Order} from "../models/order.js";
 
 const route = express.Router();
+const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+
 
 // Router handles new order req by an authenticated user
 route.post('/api/orders', requireAuth,
@@ -40,6 +42,8 @@ route.post('/api/orders', requireAuth,
 
 
         // Calculate expiration date for this order
+        const expiration = new Date();
+        expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
         // Build the order and save it to the DB
 
