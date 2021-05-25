@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import {OrderStatus} from '@atiftickets/common';
 
 // 'ticket' attribute is using Ref/Population feature of Mongoose where it refers to ObjectId of a document in 'Ticket' collection
 const orderSchema = new mongoose.Schema({
@@ -10,9 +9,6 @@ const orderSchema = new mongoose.Schema({
         status: {
             type: String,
             required: true,
-            // Enforcing what to expect as a status
-            enum: Object.values(OrderStatus),
-            default: OrderStatus.Created
         },
         expiresAt: {
             type: mongoose.Schema.Types.Date,
