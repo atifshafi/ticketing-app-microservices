@@ -1,10 +1,16 @@
 import express from "express";
+import {requireAuth} from '@atiftickets/common';
+import {Order} from "../models/order.js";
 
 const route = express.Router();
 
-//Purpose of this router to verify validity of jwt of a session. Client will make a req to this endpoint to verify exactly that.
-route.get('/api/orders', async (req, res) => {
-    res.send({});
+//Purpose of this router to get all the order made by a user.
+route.get('/api/orders', requireAuth, async (req, res) => {
+    // Make a query with userId to fetch all orders from 'Order' collection
+    const orders = await Order.find({
+        userId: req.currentUser.id
+    });
+    res.send({orders});
 
 });
 
