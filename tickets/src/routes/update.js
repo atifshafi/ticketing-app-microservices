@@ -31,7 +31,9 @@ route.put('/api/tickets/:id', requireAuth,
 
         console.log('Updating a ticket ...');
         // Update ticket
-        ticket = await Ticket.updateOne({
+        ticket = await Ticket.updateOne(
+            {'_id': req.params.id},
+            {
             'title': title,
             'price': price
         });
