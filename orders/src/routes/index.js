@@ -10,7 +10,7 @@ route.get('/api/orders', requireAuth, async (req, res) => {
     const orders = await Order.find({
         userId: req.currentUser.id
     });
-    res.send({orders});
+    res.send(orders);
 
 });
 

@@ -38,6 +38,7 @@ route.put('/api/tickets/:id', requireAuth,
             'price': price
         });
 
+
         // Publish a message to let other services know that a ticket has been updated
        new TicketUpdatedPublisher(natsWrapper.client()).publish({
             id: ticket.id,
