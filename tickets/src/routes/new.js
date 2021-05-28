@@ -24,6 +24,7 @@ route.post('/api/tickets', requireAuth,
             'userId': req.currentUser.id
         });
 
+
         // Publish a message to let other services know that a ticket has been created
         await new TicketCreatedPublisher(natsWrapper.client()).publish({
             id: ticket.id,

@@ -16,12 +16,7 @@ export class Listener {
 
     // Default subscription option
     subscriptionOptions() {
-        return this.client.
-        subscriptionOptions().
-        setDeliverAllAvailable().
-        setDurableName(this.queueGroupName).
-        setManualAckMode(true).
-        setAckWait(this.ackWait)
+        return this.client.subscriptionOptions().setDeliverAllAvailable().setDurableName(this.queueGroupName).setManualAckMode(true).setAckWait(this.ackWait)
     }
 
     // Code to setup subscription

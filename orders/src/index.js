@@ -1,6 +1,9 @@
 import 'express-async-errors';
 import mongoose from 'mongoose';
 import {natsWrapper} from "./nats-wrapper.js";
+import {TicketCreatedListener} from "./events/ticket-created-listener.js";
+import {TicketUpdatedListener} from "./events/ticket-updated-listener.js";
+
 
 // Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
 import {app} from './app.js'
@@ -45,6 +48,8 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client().close());
     process.on('SIGTERM', () => natsWrapper.client().close());
 
+    new TicketCreatedListener(natsWrapper.client()).listen();
+    new TicketUpdatedListener(natsWrapper.client()).listen();
 
     // Verify MongoDB connection
     await mongoose.connect(process.env.MONGO_URI, {

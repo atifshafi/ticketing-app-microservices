@@ -34,17 +34,16 @@ route.put('/api/tickets/:id', requireAuth,
         ticket = await Ticket.updateOne(
             {'_id': req.params.id},
             {
-            'title': title,
-            'price': price
-        });
-
+                'title': title,
+                'price': price
+            });
 
         // Publish a message to let other services know that a ticket has been updated
-       new TicketUpdatedPublisher(natsWrapper.client()).publish({
-            id: ticket.id,
-            title: ticket.title,
-            price: ticket.price,
-           userId: ticket.userId
+        new TicketUpdatedPublisher(natsWrapper.client()).publish({
+            id: req.params.id,
+            title: title,
+            price: price,
+            userId: req.currentUser
         });
 
         res.status(200).send(ticket);
