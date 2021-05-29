@@ -30,20 +30,33 @@ route.put('/api/tickets/:id', requireAuth,
         }
 
         console.log('Updating a ticket ...');
-        // Update ticket
-        ticket = await Ticket.updateOne(
-            {'_id': req.params.id},
-            {
-                'title': title,
-                'price': price
-            });
+        // Update ticket. Note that OCC using 'updateIfCurrentPlugin' can only be implemented when using '.save()'
+        // When the mongoose tries to save the document, it essentially makes a request with the version included to find the document (when plug in is included). If there's a version mismatch, it will fail to find the document
+        // ticket.title = title;
+        // ticket.price = price
+
+        ticket.set({
+            title: title,
+            price: price
+        });
+        await ticket.save();
 
         // Publish a message to let other services know that a ticket has been updated
+        // new TicketUpdatedPublisher(natsWrapper.client()).publish({
+        //     id: req.params.id,
+        //     title: title,
+        //     price: price,
+        //     userId: req.currentUser,
+        //     __v: ticket.__v
+        // });
+
+
         new TicketUpdatedPublisher(natsWrapper.client()).publish({
             id: req.params.id,
-            title: title,
-            price: price,
-            userId: req.currentUser
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId,
+            __v: ticket.__v
         });
 
         res.status(200).send(ticket);

@@ -19,14 +19,13 @@ route.delete('/api/orders/:orderId', requireAuth, async (req, res) => {
         throw new NotAuthorizedError();
     }
 
-    // Update 'status' of the order to 'cancel'
-    order = await Order.updateOne(
-        {'_id': req.params.orderId},
-        {
-            $set: {
-                'status': 'cancelled'
-            }
+    // Update order. Note that OCC using 'updateIfCurrentPlugin' can only be implemented when using '.save()'
+    // When the mongoose tries to save the document, it essentially makes a request with the version included to find the document (when plug in is included). If there's a version mismatch, it will fail to find the document
+    // order.status = 'cancelled';
+    order.set({
+            status: 'cancelled'
         });
+    await order.save();
 
     // Publish an event saying that an order was cancelled
     await new OrderCancelledPublisher(natsWrapper.client()).publish({

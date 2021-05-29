@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import {updateIfCurrentPlugin} from "mongoose-update-if-current";
 
 const ticketSchema = new mongoose.Schema({
         title: {
@@ -22,6 +23,9 @@ const ticketSchema = new mongoose.Schema({
         }
     }
 );
+
+// Adding OCC version tracking for the Ticket collection
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
