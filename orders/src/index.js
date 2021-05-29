@@ -48,6 +48,7 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client().close());
     process.on('SIGTERM', () => natsWrapper.client().close());
 
+    // Listeners of events
     new TicketCreatedListener(natsWrapper.client()).listen();
     new TicketUpdatedListener(natsWrapper.client()).listen();
 
