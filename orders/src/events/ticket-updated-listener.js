@@ -21,15 +21,6 @@ export class TicketUpdatedListener extends Listener {
             throw new NotFoundError();
         }
 
-        // Update ticket
-        // ticket = await Ticket.updateOne(
-        //     {'_id': id},
-        //     {
-        //         $set: {
-        //             'title': title,
-        //             'price': price,
-        //         }
-        //     });
 
         ticket.set({
             title: title,
