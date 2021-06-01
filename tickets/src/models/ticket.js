@@ -13,6 +13,9 @@ const ticketSchema = new mongoose.Schema({
         userId: {
             type: String,
             required: true
+        },
+        orderId: {
+            type: String
         }
     },
     // Format JSON body to send back on the response. 'transform' method is used to modify user document to a custom JSON

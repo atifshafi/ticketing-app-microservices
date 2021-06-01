@@ -1,7 +1,7 @@
 import express from "express";
 import {currentUser, requireAuth, validateRequest} from "@atiftickets/common";
 import {body} from "express-validator";
-import {Ticket} from "../models/tickets.js";
+import {Ticket} from "../models/ticket.js";
 import {TicketCreatedPublisher} from "../events/ticket-created-publisher.js"
 import {natsWrapper} from "../nats-wrapper.js";
 

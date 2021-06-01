@@ -4,6 +4,8 @@ import {natsWrapper} from "./nats-wrapper.js";
 
 // Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
 import {app} from './app.js'
+import {OrderCreatedListener} from "./events/order-created-listener.js";
+import {OrderCancelledListener} from "./events/order-cancelled-listener.js";
 
 const start = async () => {
     // Check if the env variable secret key exists for JWT
@@ -44,6 +46,10 @@ const start = async () => {
     // It makes sure when a process is killed, it's acknowledged by the event bus immediately - verify in: http://localhost:8222/streaming/channelsz?subs=1 (NATS Streaming debug online  tool)
     process.on('SIGINT', () => natsWrapper.client().close());
     process.on('SIGTERM', () => natsWrapper.client().close());
+
+    // Listeners of events
+    new OrderCreatedListener(natsWrapper.client()).listen();
+    new OrderCancelledListener(natsWrapper.client()).listen();
 
 
     // Verify MongoDB connection

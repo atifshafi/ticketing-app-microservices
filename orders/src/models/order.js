@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import {updateIfCurrentPlugin} from "mongoose-update-if-current";
 
 // 'ticket' attribute is using Ref/Population feature of Mongoose where it refers to ObjectId of a document in 'Ticket' collection
 const orderSchema = new mongoose.Schema({
@@ -29,6 +30,9 @@ const orderSchema = new mongoose.Schema({
         }
     }
 );
+
+// Adding OCC version tracking for the Orders collection (not needed at the moment)
+orderSchema.plugin(updateIfCurrentPlugin);
 
 
 const Order = mongoose.model('Order', orderSchema);
