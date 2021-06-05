@@ -1,6 +1,6 @@
 import {natsWrapper} from "./nats-wrapper.js";
 
-// Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
+//  Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
 
 const start = async () => {
     // Check if the env variable NATS_CLUSTER_ID exists
