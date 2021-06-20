@@ -1,4 +1,5 @@
 import {natsWrapper} from "./nats-wrapper.js";
+import {OrderCreatedListener} from "./events/order-created-listener.js";
 
 //  Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
 
@@ -31,6 +32,8 @@ const start = async () => {
     // It makes sure when a process is killed, it's acknowledged by the event bus immediately - verify in: http://localhost:8222/streaming/channelsz?subs=1 (NATS Streaming debug online  tool)
     process.on('SIGINT', () => natsWrapper.client().close());
     process.on('SIGTERM', () => natsWrapper.client().close());
+
+    new OrderCreatedListener(natsWrapper.client()).listen();
 
 }
 

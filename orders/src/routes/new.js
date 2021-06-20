@@ -12,7 +12,7 @@ import {OrderCreatedPublisher} from "../events/order-created-publisher.js"
 import {natsWrapper} from "../nats-wrapper.js";
 
 const route = express.Router();
-const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+const EXPIRATION_WINDOW_SECONDS = 1 * 60;
 
 
 // Router handles new order req by an authenticated user
