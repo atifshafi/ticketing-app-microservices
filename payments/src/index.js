@@ -1,14 +1,9 @@
 import 'express-async-errors';
 import mongoose from 'mongoose';
 import {natsWrapper} from "./nats-wrapper.js";
-import {TicketCreatedListener} from "./events/ticket-created-listener.js";
-import {TicketUpdatedListener} from "./events/ticket-updated-listener.js";
-import {ExpirationCompleteListener} from "./events/expiration-complete-listener.js";
-
 
 // Exported 'app.js' instead of keeping contents of 'app.js' here in order to test the service locally and to avoid connecting to the same ports (e.g. 3000) of different services/cloud based services like DB connection
 import {app} from './app.js'
-
 
 const start = async () => {
     // Check if the env variable secret key exists for JWT
@@ -50,10 +45,6 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client().close());
     process.on('SIGTERM', () => natsWrapper.client().close());
 
-    // Listeners of events
-    new TicketCreatedListener(natsWrapper.client()).listen();
-    new TicketUpdatedListener(natsWrapper.client()).listen();
-    new ExpirationCompleteListener(natsWrapper.client()).listen();
 
     // Verify MongoDB connection
     await mongoose.connect(process.env.MONGO_URI, {
@@ -64,7 +55,7 @@ const start = async () => {
     console.log("Connected to MongoDB ...");
 
     app.listen(3000, () => {
-        console.log('orders server started: 3000!');
+        console.log('ticket server started: 3000!');
     });
 }
 
